@@ -1,4 +1,4 @@
-module connection
+module github.com/owenlilly/progorm-connection
 
 go 1.18
 
