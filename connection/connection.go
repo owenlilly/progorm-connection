@@ -39,7 +39,15 @@ type (
 	}
 )
 
-func NewBaseConnectionManager(connStr string, dialector gorm.Dialector, config *gorm.Config) Manager {
+func MustNewBaseConnectionManager(connStr string, dialector gorm.Dialector, config *gorm.Config) Manager {
+	connMan, err := NewBaseConnectionManager(connStr, dialector, config)
+	if err != nil {
+		log.Fatalf("failed to connect to database: %s", err.Error())
+	}
+	return connMan
+}
+
+func NewBaseConnectionManager(connStr string, dialector gorm.Dialector, config *gorm.Config) (Manager, error) {
 	connMan := &connectionManager{
 		dialector:      dialector,
 		config:         config,
@@ -62,11 +70,8 @@ func NewBaseConnectionManager(connStr string, dialector gorm.Dialector, config *
 
 	// open database connection
 	_, err := connMan.GetConnection()
-	if err != nil {
-		log.Fatalf("failed to connect to database: %s", err.Error())
-	}
 
-	return connMan
+	return connMan, err
 }
 
 // GetConnection get current *gorm.DB connection

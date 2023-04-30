@@ -1,6 +1,6 @@
 module github.com/owenlilly/progorm-connection
 
-go 1.18
+go 1.20
 
 require gorm.io/gorm v1.23.5
 
